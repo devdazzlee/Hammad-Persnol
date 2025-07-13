@@ -13,8 +13,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import { useState } from "react"
+import { useState } from "react";
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify'; // Import toast for notifications
+import { backendUrl } from "@/config/config"
+
+// Define the initial state for the form fields
+const initialFormState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  service: '',
+  genre: '',
+  message: '',
+};
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -31,38 +44,32 @@ const staggerContainer = {
 }
 
 export default function ContactPage() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [formData, setFormData] = useState(initialFormState);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget as HTMLFormElement;
-
-    const firstNameElement = form.elements.namedItem('firstName') as HTMLInputElement;
-    const lastNameElement = form.elements.namedItem('lastName') as HTMLInputElement;
-    const emailElement = form.elements.namedItem('email') as HTMLInputElement;
-    const phoneElement = form.elements.namedItem('phone') as HTMLInputElement;
-    const serviceElement = form.elements.namedItem('service') as HTMLSelectElement;
-    const genreElement = form.elements.namedItem('genre') as HTMLSelectElement;
-    const messageElement = form.elements.namedItem('message') as HTMLTextAreaElement;
-
-    const formData = {
-        firstName: firstNameElement ? firstNameElement.value : '',
-        lastName: lastNameElement ? lastNameElement.value : '',
-        email: emailElement ? emailElement.value : '',
-        phone: phoneElement ? phoneElement.value : '',
-        service: serviceElement ? serviceElement.value : '',
-        genre: genreElement ? genreElement.value : '',
-        message: messageElement ? messageElement.value : '',
-    };
+    setLoading(true); // Set loading state to true
 
     try {
-        await axios.post('http://localhost:5000/api/contact', formData);
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 3000);
+      await axios.post(`${backendUrl}/contact`, formData);
+      setIsSubmitted(true);
+      setFormData(initialFormState); // Clear the form fields
+      toast.success('Message sent successfully!'); // Show success toast
+      setTimeout(() => setIsSubmitted(false), 3000);
     } catch (error) {
-        console.error('Error submitting form:', error);
+      console.error('Error submitting form:', error);
+      toast.error('Failed to send message. Please try again.'); // Show error toast
+    } finally {
+      setLoading(false); // Reset loading state
     }
-};
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
@@ -106,27 +113,27 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="firstName">First Name</Label>
-                        <Input id="firstName" name="firstName" placeholder="John" required />
+                        <Input id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="John" required />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName">Last Name</Label>
-                        <Input id="lastName" name="lastName" placeholder="Doe" required />
+                        <Input id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Doe" required />
                       </div>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Address</Label>
-                      <Input id="email" name="email" type="email" placeholder="john@example.com" required />
+                      <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" required />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" name="phone" type="tel" placeholder="+1 (555) 123-4567" />
+                      <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="+1 (555) 123-4567" />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="service">Service Interested In</Label>
-                      <Select name="service">
+                      <Select name="service" value={formData.service} onValueChange={(value) => setFormData({ ...formData, service: value })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a service" />
                         </SelectTrigger>
@@ -141,7 +148,7 @@ export default function ContactPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="genre">Book Genre</Label>
-                      <Select name="genre">
+                      <Select name="genre" value={formData.genre} onValueChange={(value) => setFormData({ ...formData, genre: value })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select your book genre" />
                         </SelectTrigger>
@@ -160,26 +167,16 @@ export default function ContactPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="message">Tell Us About Your Project</Label>
-                      <Textarea id="message" name="message" placeholder="Describe your book, your goals, and any specific questions you have..." className="min-h-[120px]" required />
+                      <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Describe your book, your goals, and any specific questions you have..." className="min-h-[120px]" required />
                     </div>
 
                     <Button
                       type="submit"
                       size="lg"
                       className="w-full text-lg py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                      disabled={isSubmitted}
+                      disabled={loading} // Disable button when loading
                     >
-                      {isSubmitted ? (
-                        <>
-                          <CheckCircle className="mr-2 h-5 w-5" />
-                          Message Sent!
-                        </>
-                      ) : (
-                        <>
-                          <Send className="mr-2 h-5 w-5" />
-                          Send Message
-                        </>
-                      )}
+                      {loading ? 'Submitting...' : (isSubmitted ? 'Message Sent!' : 'Send Message')}
                     </Button>
                   </form>
                 </CardContent>
@@ -285,6 +282,7 @@ export default function ContactPage() {
       </section>
 
       <Footer />
+      <ToastContainer /> {/* Add ToastContainer here */}
     </div>
   )
 }
