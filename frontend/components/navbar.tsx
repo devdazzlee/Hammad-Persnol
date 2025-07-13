@@ -27,26 +27,10 @@ export default function Navbar() {
 
   const serviceCategories = [
     {
-      title: "Paid Advertising",
-      items: [
-        { name: "Google Ads & PPC", href: "/services/google-ads" },
-        { name: "Meta Ads (Facebook & Instagram)", href: "/services/meta-ads" },
-        { name: "YouTube Marketing", href: "/services/youtube-marketing" },
-      ],
-    },
-    {
       title: "Publishing Services",
       items: [
         { name: "Book Publishing", href: "/services/book-publishing" },
         { name: "Book Marketing", href: "/services/book-marketing" },
-      ],
-    },
-    {
-      title: "E-commerce & Social",
-      items: [
-        { name: "Amazon Marketing", href: "/services/amazon-marketing" },
-        { name: "Shopify Marketing", href: "/services/shopify-marketing" },
-        { name: "Social Media Marketing", href: "/services/social-media" },
       ],
     },
   ]
@@ -76,9 +60,8 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-lg font-medium transition-colors hover:text-purple-600 ${
-                  pathname === item.href ? "text-purple-600" : "text-gray-700"
-                }`}
+                className={`text-lg font-medium transition-colors hover:text-purple-600 ${pathname === item.href ? "text-purple-600" : "text-gray-700"
+                  }`}
               >
                 {item.name}
               </Link>
@@ -105,15 +88,6 @@ export default function Navbar() {
                     {index < serviceCategories.length - 1 && <DropdownMenuSeparator className="my-2" />}
                   </div>
                 ))}
-                <DropdownMenuSeparator className="my-2" />
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/services"
-                    className="w-full px-2 py-2 font-semibold text-purple-600 hover:bg-purple-50 rounded-md"
-                  >
-                    View All Services →
-                  </Link>
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </nav>
@@ -142,9 +116,8 @@ export default function Navbar() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className={`text-xl font-medium transition-colors hover:text-purple-600 ${
-                      pathname === item.href ? "text-purple-600" : "text-gray-700"
-                    }`}
+                    className={`text-xl font-medium transition-colors hover:text-purple-600 ${pathname === item.href ? "text-purple-600" : "text-gray-700"
+                      }`}
                   >
                     {item.name}
                   </Link>

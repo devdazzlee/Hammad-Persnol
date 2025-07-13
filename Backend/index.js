@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/contact', contactRoutes);
+app.use('/api', contactRoutes);
 
 // Error Handling Middleware
 app.use(errorHandler);

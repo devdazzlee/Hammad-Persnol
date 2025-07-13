@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { useState } from "react"
+import axios from 'axios';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -32,12 +33,36 @@ const staggerContainer = {
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Simulate form submission
-    setIsSubmitted(true)
-    setTimeout(() => setIsSubmitted(false), 3000)
-  }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+
+    const firstNameElement = form.elements.namedItem('firstName') as HTMLInputElement;
+    const lastNameElement = form.elements.namedItem('lastName') as HTMLInputElement;
+    const emailElement = form.elements.namedItem('email') as HTMLInputElement;
+    const phoneElement = form.elements.namedItem('phone') as HTMLInputElement;
+    const serviceElement = form.elements.namedItem('service') as HTMLSelectElement;
+    const genreElement = form.elements.namedItem('genre') as HTMLSelectElement;
+    const messageElement = form.elements.namedItem('message') as HTMLTextAreaElement;
+
+    const formData = {
+        firstName: firstNameElement ? firstNameElement.value : '',
+        lastName: lastNameElement ? lastNameElement.value : '',
+        email: emailElement ? emailElement.value : '',
+        phone: phoneElement ? phoneElement.value : '',
+        service: serviceElement ? serviceElement.value : '',
+        genre: genreElement ? genreElement.value : '',
+        message: messageElement ? messageElement.value : '',
+    };
+
+    try {
+        await axios.post('http://localhost:5000/api/contact', formData);
+        setIsSubmitted(true);
+        setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (error) {
+        console.error('Error submitting form:', error);
+    }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
@@ -81,27 +106,27 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="firstName">First Name</Label>
-                        <Input id="firstName" placeholder="John" required />
+                        <Input id="firstName" name="firstName" placeholder="John" required />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName">Last Name</Label>
-                        <Input id="lastName" placeholder="Doe" required />
+                        <Input id="lastName" name="lastName" placeholder="Doe" required />
                       </div>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Address</Label>
-                      <Input id="email" type="email" placeholder="john@example.com" required />
+                      <Input id="email" name="email" type="email" placeholder="john@example.com" required />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" />
+                      <Input id="phone" name="phone" type="tel" placeholder="+1 (555) 123-4567" />
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="service">Service Interested In</Label>
-                      <Select>
+                      <Select name="service">
                         <SelectTrigger>
                           <SelectValue placeholder="Select a service" />
                         </SelectTrigger>
@@ -116,7 +141,7 @@ export default function ContactPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="genre">Book Genre</Label>
-                      <Select>
+                      <Select name="genre">
                         <SelectTrigger>
                           <SelectValue placeholder="Select your book genre" />
                         </SelectTrigger>
@@ -135,12 +160,7 @@ export default function ContactPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="message">Tell Us About Your Project</Label>
-                      <Textarea
-                        id="message"
-                        placeholder="Describe your book, your goals, and any specific questions you have..."
-                        className="min-h-[120px]"
-                        required
-                      />
+                      <Textarea id="message" name="message" placeholder="Describe your book, your goals, and any specific questions you have..." className="min-h-[120px]" required />
                     </div>
 
                     <Button
