@@ -27,6 +27,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import MiniContactForm from "@/components/mini-contact-form" // Import the new component
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -48,6 +49,7 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
+      {/* This section already has pt-32, which is good for clearing the fixed Navbar */}
       <section className="pt-32 pb-20 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           <motion.div className="text-center space-y-8" initial="initial" animate="animate" variants={staggerContainer}>
@@ -66,20 +68,7 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-              >
-                <Link href="/services">
-                  Start Growing Today <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 border-2 bg-transparent">
-                <Link href="/contact">Get Free Strategy Call</Link>
-              </Button>
-            </motion.div>
+            {/* Original CTA buttons removed from here. The MiniContactForm will be a separate section. */}
 
             <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-6 pt-8">
               {[
@@ -95,6 +84,35 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </div>
+      </section>
+
+      {/* Dedicated MiniContactForm Section for the homepage hero call-to-action */}
+      {/* We add a section with py-20 px-4 md:px-6 here to provide spacing for the form */}
+      <section className="py-20 px-4 md:px-6">
+        <MiniContactForm
+          heading="Get Your Free Strategy Call"
+          paragraph={
+            <> {/* Use a React Fragment to group multiple paragraphs */}
+              <p>
+                Unlock your business's potential with a personalized marketing strategy. Fill out the form below to
+                schedule a free, no-obligation consultation with our marketing experts.
+              </p>
+              <p className="mt-4">
+                During this call, our expert team will meticulously analyze your current market position, identify
+                key growth opportunities, and provide actionable insights tailored specifically to your business needs.
+              </p>
+              <p className="mt-4">
+                We believe in transparency and delivering tangible results.
+              </p>
+              <p className="mt-4">
+                Don't miss this invaluable opportunity to gain a competitive edge and transform your digital presence.
+                Take the first step towards accelerated growth today by completing the brief form. We look forward to connecting with you!
+              </p>
+            </>
+          }
+          initialService="consultation"
+          hideServiceSelect={true}
+        />
       </section>
 
       {/* Stats Section */}
@@ -537,9 +555,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section (at the bottom) - this section already has py-20 and can remain as is */}
       <motion.section
-        className="py-20 px-4 md:px-6"
+        className="py-20 px-4 md:px-6" // This section already has py-20, so it's ready
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -553,27 +571,30 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Ready to Accelerate Your Growth?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Join hundreds of successful businesses who chose Hammad Marketing to transform their digital presence.
-              Your growth story starts with a single click.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-              >
-                <Link href="/contact">
-                  Get Started Today <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 border-2 bg-transparent">
-                <Link href="/services">Explore Services</Link>
-              </Button>
-            </div>
+            {/* The MiniContactForm itself should not have py-20, its parent section does */}
+            <MiniContactForm
+              heading="Ready to Accelerate Your Growth?"
+              paragraph={
+                <>
+                  <p>
+                    Join hundreds of successful businesses who chose Hammad Marketing to transform their digital presence
+                    and achieve remarkable growth. We are committed to helping you reach your full potential in the competitive
+                    digital landscape.
+                  </p>
+                  <p className="mt-4">
+                    Your growth story starts with a single click. Whether you're looking for advanced digital advertising,
+                    comprehensive book publishing, or expert social media management, our tailored solutions are designed
+                    to deliver maximum ROI.
+                  </p>
+                  <p className="mt-4">
+                    Let's build something amazing together. Take the first step towards a brighter, more profitable future
+                    for your business. Contact us today to discuss your unique needs and how we can help you succeed.
+                  </p>
+                </>
+              }
+              hideServiceSelect={false}
+            />
+
             <div className="pt-8">
               <p className="text-sm text-gray-500 mb-4">Trusted by leading brands worldwide</p>
               <div className="flex flex-wrap justify-center gap-8 opacity-60">

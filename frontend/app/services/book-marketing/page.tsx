@@ -8,13 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import MiniContactForm from "@/components/mini-contact-form" // Import the new component
 
 export default function BookMarketingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
       <Navbar />
 
-      {/* Hero Section */}
+      {/* Hero Section - Keep this for main title/description */}
       <section className="pt-32 pb-20 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           <motion.div
@@ -34,22 +35,33 @@ export default function BookMarketingPage() {
               Transform your book into a bestseller with our comprehensive marketing strategies. From Amazon
               optimization to social media campaigns, we help authors reach their target audience and maximize sales.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-              >
-                <Link href="/contact">
-                  Market Your Book <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 border-2 bg-transparent">
-                <Link href="/contact">Get Marketing Strategy</Link>
-              </Button>
-            </div>
+            {/* Removed MiniContactForm from here */}
           </motion.div>
         </div>
+      </section>
+
+      {/* New Section for MiniContactForm - provides its own spacing */}
+      <section className="py-20 px-4 md:px-6">
+        <MiniContactForm
+          heading="Get Your Free Marketing Strategy"
+          paragraph={
+            <>
+              <p>
+                Ready to boost your book sales? Fill out the form for a tailored marketing strategy and a free
+                consultation on how we can make your book a bestseller.
+              </p>
+              <p className="mt-4">
+                During this session, we'll discuss proven strategies for Amazon optimization, social media
+                engagement, PR outreach, and more.
+              </p>
+              <p className="mt-4">
+                Don't let your book get lost in the crowd. Our data-driven approach and innovative campaigns are
+                designed to elevate your author platform and drive significant sales.
+              </p>
+            </>
+          }
+          initialService="marketing"
+        />
       </section>
 
       {/* Services Overview */}

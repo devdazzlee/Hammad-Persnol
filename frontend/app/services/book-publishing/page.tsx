@@ -8,13 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import MiniContactForm from "@/components/mini-contact-form" // Import the new component
 
 export default function BookPublishingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       <Navbar />
 
-      {/* Hero Section */}
+      {/* Hero Section - Keep this for main title/description */}
       <section className="pt-32 pb-20 px-4 md:px-6">
         <div className="container mx-auto max-w-6xl">
           <motion.div
@@ -34,22 +35,34 @@ export default function BookPublishingPage() {
               Transform your manuscript into a professionally published book. From editing and design to global
               distribution, we handle every aspect of the publishing process with expertise and care.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="text-lg px-8 py-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
-              >
-                <Link href="/contact">
-                  Publish Your Book <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 border-2 bg-transparent">
-                <Link href="/contact">Get Publishing Quote</Link>
-              </Button>
-            </div>
+            {/* Removed MiniContactForm from here */}
           </motion.div>
         </div>
+      </section>
+
+      {/* New Section for MiniContactForm - provides its own spacing */}
+      <section className="py-20 px-4 md:px-6">
+        <MiniContactForm
+          heading="Get Your Free Publishing Quote"
+          paragraph={
+            <>
+              <p>
+                Ready to publish your masterpiece? Fill out the form for a personalized quote and a free
+                consultation on our comprehensive book publishing services.
+              </p>
+              <p className="mt-4">
+                Our team of experienced editors, designers, and publishing specialists will guide you through
+                every step, ensuring your book meets the highest industry standards.
+              </p>
+              <p className="mt-4">
+                Discover how our tailored packages can simplify your publishing journey and set your book up for
+                success. This consultation is a great opportunity to explore your options and get expert advice
+                without any commitment.
+              </p>
+            </>
+          }
+          initialService="publishing"
+        />
       </section>
 
       {/* Services Overview */}
