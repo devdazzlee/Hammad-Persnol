@@ -206,7 +206,7 @@ export default function ContactPage() {
                   {
                     icon: Mail,
                     title: "Email Us",
-                    content: "contact@hammadmarketing.com",
+                    content: "hammad.marketing02@gmail.com",
                     description: "Send us an email anytime",
                   },
                   {
